@@ -7,9 +7,9 @@ body{
 }
 
 #container{
-	min-width: 1500px;
+	width: 1200px;
 	display: inline-block;
-	margin: 10px 0;
+	margin: 10px 70px;
 }
 
 #header{
@@ -31,6 +31,7 @@ body{
 
 #main{
 	margin-top: 300px;
+	margin-bottom: 500px;
 }
 
 
