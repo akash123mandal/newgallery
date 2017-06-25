@@ -165,11 +165,11 @@
 					nav('d');
 				});
 					
- 				function openpic() {
- 					var src = $("#current img").attr("src");
- 					src = src.replace("images", "images_orig");
+ 				$(".row0.col0").click(function (evt) {
+ 					var src = $(evt.target).css("background-image");
+ 					src = src.replace("images", "images_orig").replace('url(', '').replace(')', '').replace(/\"/gi, "");
 					window.open(src);	
- 				}
+ 				});
 			});
 		</script>
 	</head>
