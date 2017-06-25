@@ -105,3 +105,7 @@ body{
 	box-shadow: 0 0 15px 2px black;
 }
 
+.row0.col0:hover{
+	cursor: pointer;
+}
+
