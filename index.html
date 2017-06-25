@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<title>Wild Cube</title>
+
+		<link rel="stylesheet" href="style.css">
+		<style type="text/css" id="varcss">
+			
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
+		<script type="text/javascript">
+			$(document).ready(function () {
+				Array.prototype.index = function(i){
+					var l = this.length;      
+					i %= l;
+					i = i < 0 ? l + i : i;
+					return this[i];
+				};
+				var animal = {category:"animal", 
+							eg:[["cheetah","Catch me if you can!"], 
+							["dog", "Could I BE any cuter?"], 
+							["kitten", "My home stinks."], 
+							["lion", "I an the kin...yaaawn"], 
+							["monkey", "Happy family."], 
+							["panda", "Hi there!"], 
+							["tiger-cub", "Do my stripes look good?"]]
+							};
+				var bird = {category:"bird", 
+							eg:[["chicks", "Mommy doesn't love us :'("], 
+							["eagle", "You say I'm bald. Which bird <i>has</i> hair?"], 
+							["humming", "Hmmmmm...hmmmm...oh that's just me humming."], 
+							["owl", "I'm coming to teach you a lesson."], 
+							["parrot", "Pop goes the weasel"], 
+							["peacock", "No, no, I'm not a girl! Don't call me PRETTY!"], 
+							["toucan", "I have a thick, monstrous, 8-inch long... beak."]]
+							};
+				var insect = {category:"insect", 
+							eg:[["bee", "Hey, I'm busy as always!"], 
+							["butterfly", '"I'+"'"+'m prettier!<br>"No! I am!"'], 
+							["caterpillar", "Could I lend you a hand? No, but a leg perhaps..."], 
+							["grasshopper", "Yohoo! I hop on grass!"], 
+							["ladybug", "Don't go by appearances. I bite!"], 
+							["snail", "Who are you and what are you doing down there?"]]
+							};
+				var fish = {category:"fish", 
+							eg:[["fish", "Go away! I'm not going back to the aquarium"], 
+							["octopus", "I could lend you a hand, brother"], 
+							["seahorse", "I'm not a <i>horse</i>."], 
+							["shark", "Can I star in JAWS 2?"], 
+							["stingray", "No! I'm not a hat. I sting!"], 
+							["tortoise", "I carry my home with me!"]]
+							};
+
+				var cat = [animal, bird, insect, fish];
+				var catnames = ["Animals", "Birds", "Insects", "Sea Creatures"];
+				var curr = {cat:0, pic:0};
+				for(var i = -2; i <= 2; i++)
+				{
+					for(var j = -2; j <= 2; j++)
+					{
+						var div = "<div class='row" + i + " col" + j + " pic ";
+						var src = "images/" + cat.index(i).category + "/" + cat.index(i).eg.index(j)[0] + ".jpg";
+						div += "'></div>";
+						var $divobj = $($.parseHTML(div));
+						$divobj.css('background-image', 'url("' + src + '")');
+						$("#cube").append($divobj);
+					}
+				}
+
+				var rowcl = [];
+				var colcl = [];
+				for(var i = -2; i <= 2; i++)
+				{
+					rowcl.push(".row"+i);
+					colcl.push(".col"+i);
+				}
+				for(var i = -2; i <= 2; i++)
+				{
+					for(var j = -2; j <= 2; j++)
+					{
+						var fir = -i*j;
+						var sel = rowcl[2 + i] + colcl[2 + j] + "{";
+						if(Math.abs(i * j) != 4)
+						{
+							if(i == 0 && j == 0)
+								sel += 'opacity:1;'
+							else if(Math.abs(fir) == 1)
+								sel += 'transform: matrix3d(0.86,0,' + 0.5*j + ',0,0,0.86,' + 0.5*i + ',0,' + 0.5*fir*i + ',' + 0.5*fir*j + ',0.7396,0,0,0,0,1);opacity:0.1;';
+							else if(i == 0)
+								sel += 'transform: rotateY(' + -30*j + 'deg);opacity:0.5;';
+							else if(j == 0)
+								sel += 'transform: rotateX(' + 30*i + 'deg);opacity:0.4;';
+							else if(Math.abs(i) == 1)
+								sel += 'transform: matrix3d(0.5,0,' + 0.87*j/2 + ',0,0,0.87,' + 0.50*i + ',0,' + (-0.87*j/2) + ',' + (-0.5*i) + ',0.435,0,0,0,0,1);';
+							else if(Math.abs(i) == 2)
+								sel += 'transform: matrix3d(0.87,0,' + 0.50*j + ',0,0,0.5,' + 0.87*i/2 + ',0,' + (-0.5*j) + ',' + (-0.87*i/2) + ',0.435,0,0,0,0,1);';
+							if(Math.abs(i) == 2 || Math.abs(j) == 2)
+								sel += "opacity:0;";
+						}
+						else 
+							sel += 'display: none;';
+						sel += "}";
+						$("#varcss").append(sel);
+					}
+				}
+
+				function setClass (name, num) {
+					for(i = -2; i <= 2; i++)
+					{
+						if(name == "row")
+						{
+							var catc = num;
+							var picc = i;
+						}
+						else
+						{
+							var catc = i;
+							var picc = num;
+						}
+						var src = "images/" + cat.index(curr.cat + catc).category + "/" + cat.index(curr.cat + catc).eg.index(curr.pic + picc)[0] + ".jpg";
+						var sel = "." + name + num + "." + (name == "row" ? "col" : "row") + i;
+						$(sel).css('background-image', 'url("' + src +'")');
+					}
+				}
+
+				var clickDisabled = false;
+				var roll = [-3, -2, -1, 0, 1, 2]; // -3 is to act as temp row or col for exchange
+
+				function nav (dir) {
+					if(clickDisabled)
+						return;
+					var flip = (dir == 'l' || dir == 'u') ? -1 : 1;
+					var name = (dir == 'l' || dir == 'r') ? "col" : "row";
+					for(var i = 1; i <= 6; i++)	
+						$("." + name + roll.index(i * flip)).each(function () {
+								$(this).addClass(name + roll.index(flip * (i - 1))).removeClass(name + roll.index(i * flip));
+						});
+					if(name == "row")
+						curr.cat += flip;
+					else
+						curr.pic += flip;
+					setClass(name, 2 * flip);
+					clickDisabled = true;
+					setTimeout(function(){clickDisabled = false;}, 1200);
+				}
+
+
+				$("#nav-r").on('click', function () {
+					nav('r');
+				});
+
+				$("#nav-l").on('click', function () {
+					nav('l');
+				});
+
+				$("#nav-u").on('click', function() {
+					nav('u');
+				});
+
+				$("#nav-d").on('click', function() {
+					nav('d');
+				});
+					
+ 				function openpic() {
+ 					var src = $("#current img").attr("src");
+ 					src = src.replace("images", "images_orig");
+					window.open(src);	
+ 				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			<header id="header">
+				<div id="title">In the Wi<img src="images/u_w.png" alt="u" >d Box</div>
+			</header>
+			<div id="main">
+				<div id="caption">
+				</div>
+				<div id="cube-cont">
+					<div id="cube">
+				 		<div class="nav-v" id="nav-u">
+							<img src="images/up.gif">
+						</div>
+						<div class="nav-h" id="nav-l">
+							<img src="images/prev.gif">
+						</div>
+						<div class="nav-h" id="nav-r">
+							<img src="images/next.gif">
+						</div>
+						<div class="nav-v" id="nav-d">
+							<img src="images/down.gif">
+						</div>
+					</div>
+				</div>				
+			</div>
+		</div>
+	</body>
+</html>
