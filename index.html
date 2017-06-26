@@ -126,6 +126,7 @@
 					}
 				}
 
+				$(".row0.col0").on('click',openpic);
 				var clickDisabled = false;
 				var roll = [-3, -2, -1, 0, 1, 2]; // -3 is to act as temp row or col for exchange
 
@@ -145,6 +146,7 @@
 					setClass(name, 2 * flip);
 					clickDisabled = true;
 					setTimeout(function(){clickDisabled = false;}, 1200);
+					$(".row0.col0").on('click',openpic);
 				}
 
 
@@ -164,11 +166,12 @@
 					nav('d');
 				});
 					
- 				$(".row0.col0").click(function (evt) {
+ 				function openpic(evt) 
+ 				{
  					var src = $(evt.target).css("background-image");
  					src = src.replace("images", "images_orig").replace('url(', '').replace(')', '').replace(/\"/gi, "");
 					window.open(src);	
- 				});
+ 				}
 			});
 		</script>
 	</head>
