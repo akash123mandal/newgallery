@@ -8,8 +8,9 @@ body{
 }
 
 #container{
+	width: 70%;
 	display: inline-block;
-	margin: 10px 70px;
+	text-align: center;
 }
 
 #header{
@@ -20,14 +21,14 @@ body{
 	color: white;
 	display: inline-block;
 	font-family: 'Crushed', cursive;
-	font-size: 60px;
+	font-size: calc(25px + 4vw);
 	letter-spacing: 4px;
 	white-space: nowrap;
 }
 
 #title img{
 	margin: 0 4px -5px 4px;
-	width: 50px;
+	width: calc(40px + 2vw);
 }
 
 #main{

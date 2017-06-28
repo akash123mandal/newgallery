@@ -13,6 +13,22 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
 		<script type="text/javascript">
 			$(document).ready(function () {
+				function sizefix() {
+					var width = $(window).width();
+					if (width <= 550)
+					{
+						var a = width/550*400;
+						var css = "";
+						css += "#nav-u, #nav-d { width: " + (a+6) + "px;}";
+						css += "#nav-l, #nav-r { height: " + (a+6) + "px;}";
+						css += "#cube { width: " + a + "px; height: " + a + "px;}";
+						css += ".nav-h img { margin-top: " + (a - 40 + 6)/2 + "px;}";
+						css += ".pic { transform-origin: " + (a+6)/2 + "px " + (a+6)/2 + "px " + (Math.tan(Math.PI * 5 / 12) * (a + 6)/2) + "px; width: " + a + "px;	height: " + a + "px;}";
+						console.log(css);
+						$("#varcss").append(css);
+					}
+				}
+				sizefix();
 				Array.prototype.index = function(i){
 					var l = this.length;      
 					i %= l;
@@ -173,6 +189,10 @@
  					src = src.replace("images", "images_orig").replace('url(', '').replace(')', '').replace(/\"/gi, "");
 					window.open(src);	
  				}
+
+ 				$(window).resize(function () {
+ 					sizefix();
+ 				})
 			});
 		</script>
 	</head>
