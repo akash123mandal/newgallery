@@ -4,10 +4,10 @@ body{
 	margin: 0;
 	text-align: center;
 	background-color: black;
+	overflow: hidden;
 }
 
 #container{
-	width: 1200px;
 	display: inline-block;
 	margin: 10px 70px;
 }
@@ -22,6 +22,7 @@ body{
 	font-family: 'Crushed', cursive;
 	font-size: 60px;
 	letter-spacing: 4px;
+	white-space: nowrap;
 }
 
 #title img{
@@ -30,13 +31,16 @@ body{
 }
 
 #main{
-	margin-top: 300px;
-	margin-bottom: 500px;
+	margin-top: 30px;
 }
 
+.nav-h, .nav-v{
+	transform: scale(1.05);
+}
 
 .nav-h img, .nav-v img{
 	width: 40px;
+	filter: drop-shadow(0px 0px 5px #000);
 }
 
 .nav-h img{
@@ -73,8 +77,7 @@ body{
 
 .nav-v:hover, .nav-h:hover{
 	cursor: pointer;
-	transform: scale(1.05);
-	background-color: rgba(0, 0, 0, 0.2);
+	transform: scale(1.15);	
 }
 
 #cube{
